@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SISTec IoT – Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background-color: #f4f1ec;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .page-wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 880px;
+      background: #ffffff;
+      border: 1px solid #ddd8d0;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+      overflow: hidden;
+    }
+    .left-panel {
+      background-color: #1a2744;
+      color: #fff;
+      width: 42%;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .brand-icon { font-size: 2rem; margin-bottom: 1.5rem; }
+    .left-panel h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      line-height: 1.35;
+      margin-bottom: 1rem;
+    }
+    .gold-line { width: 36px; height: 2px; background: #c9a84c; margin: 1.4rem 0; }
+    .left-panel p { font-size: 0.88rem; color: #a8b4cc; line-height: 1.75; }
+
+    .right-panel {
+      flex: 1;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .right-panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      color: #1a2744;
+      margin-bottom: 0.3rem;
+    }
+    .subtitle { font-size: 0.87rem; color: #888; font-weight: 300; margin-bottom: 2rem; }
+
+    .form-group { margin-bottom: 1.15rem; }
+    label {
+      display: block;
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 0.4rem;
+    }
+    input[type="email"], input[type="password"], input[type="text"] {
+      width: 100%;
+      border: 1px solid #d0ccc6;
+      background: #faf9f7;
+      padding: 0.72rem 1rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      color: #1a1a1a;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+    input:focus { border-color: #1a2744; background: #fff; }
+
+    .btn-primary {
+      width: 100%;
+      background: #1a2744;
+      color: #fff;
+      border: none;
+      padding: 0.82rem 1rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.4rem;
+    }
+    .btn-primary:hover { background: #253a6e; }
+
+    .msg-box {
+      font-size: 0.84rem;
+      padding: 0.6rem 0.9rem;
+      margin-bottom: 1.1rem;
+      display: none;
+      border-left: 3px solid;
+    }
+    .msg-error { background: #fef4f4; border-color: #b94040; color: #b94040; }
+    .msg-success { background: #f3fbf5; border-color: #2d7a4f; color: #2d7a4f; }
+
+    .footer-link { text-align: center; margin-top: 1.6rem; font-size: 0.85rem; color: #888; }
+    .footer-link a { color: #1a2744; font-weight: 600; text-decoration: none; }
+    .footer-link a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .left-panel { display: none; }
+      .right-panel { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <div class="left-panel">
+      <div class="brand-icon">📡</div>
+      <h1>SISTec IoT Application 2026</h1>
+      <div class="gold-line"></div>
+      <p>Create your account and start monitoring your IoT sensors and devices from anywhere, in real time.</p>
+    </div>
+
+    <div class="right-panel">
+      <h2>Create Account</h2>
+      <p class="subtitle">Fill in the details below to get started</p>
+
+      <div class="msg-box" id="msg-box"></div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="name" placeholder="John Doe" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Choose a password" />
+      </div>
+
+      <button class="btn-primary" onclick="doRegister()">Create Account</button>
+
+      <div class="footer-link">
+        Already have an account? <a href="index.html">Sign in here</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function doRegister() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const msgBox = document.getElementById('msg-box');
+      msgBox.style.display = 'none';
+
+      if (!name || !email || !password) {
+        msgBox.textContent = 'Please fill in all fields.';
+        msgBox.className = 'msg-box msg-error';
+        msgBox.style.display = 'block';
+        return;
+      }
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          msgBox.textContent = 'Account created successfully. Redirecting to login...';
+          msgBox.className = 'msg-box msg-success';
+          msgBox.style.display = 'block';
+          setTimeout(() => window.location.href = 'index.html', 2000);
+        } else {
+          msgBox.textContent = data.message || 'Registration failed.';
+          msgBox.className = 'msg-box msg-error';
+          msgBox.style.display = 'block';
+        }
+      } catch {
+        msgBox.textContent = 'Server error. Please try again.';
+        msgBox.className = 'msg-box msg-error';
+        msgBox.style.display = 'block';
+      }
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+  </script>
+</body>
+</html>

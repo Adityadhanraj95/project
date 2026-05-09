@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SISTec IoT – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: #f4f1ec;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: #1a2744;
+      padding: 0 2rem;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #c9a84c;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-brand span.icon { font-size: 1.4rem; }
+    .nav-brand h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .nav-user {
+      font-size: 0.88rem;
+      color: #a8b4cc;
+    }
+    .nav-user strong { color: #fff; }
+    .btn-logout {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      background: transparent;
+      color: #c9a84c;
+      border: 1px solid #c9a84c;
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover { background: #c9a84c; color: #1a2744; }
+
+    /* ===== MAIN CONTENT ===== */
+    .main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    /* Section Header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.3rem;
+    }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #1a2744;
+    }
+    .section-header .gold-accent {
+      height: 2px;
+      width: 30px;
+      background: #c9a84c;
+      margin-top: 3px;
+    }
+
+    /* ===== SENSOR CARDS ===== */
+    .sensor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .sensor-card {
+      background: #fff;
+      border: 1px solid #ddd8d0;
+      padding: 2rem 2rem 1.6rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .sensor-card .card-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .sensor-card .card-label .label-icon { font-size: 1rem; }
+    .sensor-card .big-value {
+      font-size: 3.2rem;
+      font-weight: 300;
+      color: #1a2744;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+    .sensor-card .big-value span.unit {
+      font-size: 1.4rem;
+      color: #888;
+      font-weight: 400;
+    }
+    .card-meta {
+      border-top: 1px solid #ece9e3;
+      padding-top: 1rem;
+      display: flex;
+      gap: 2rem;
+    }
+    .meta-item { font-size: 0.82rem; color: #777; }
+    .meta-item strong { color: #333; font-weight: 600; display: block; font-size: 0.9rem; }
+
+    /* ===== LCD SECTION ===== */
+    .lcd-panel {
+      background: #fff;
+      border: 1px solid #ddd8d0;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      margin-bottom: 2.5rem;
+    }
+    .lcd-panel label {
+      display: block;
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+    .lcd-input-row {
+      display: flex;
+      gap: 0.8rem;
+      align-items: stretch;
+    }
+    .lcd-panel input[type="text"] {
+      flex: 1;
+      border: 1px solid #d0ccc6;
+      background: #faf9f7;
+      padding: 0.75rem 1rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .lcd-panel input:focus { border-color: #1a2744; background: #fff; }
+    .btn-send {
+      background: #1a2744;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.6rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-send:hover { background: #253a6e; }
+    .char-info { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
+    .lcd-msg {
+      font-size: 0.84rem;
+      padding: 0.55rem 0.9rem;
+      margin-top: 0.8rem;
+      border-left: 3px solid;
+      display: none;
+    }
+    .lcd-msg.success { background: #f3fbf5; border-color: #2d7a4f; color: #2d7a4f; }
+    .lcd-msg.error   { background: #fef4f4; border-color: #b94040; color: #b94040; }
+
+    /* ===== TABLE ===== */
+    .table-panel {
+      background: #fff;
+      border: 1px solid #ddd8d0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    thead tr {
+      background: #f7f5f0;
+      border-bottom: 2px solid #ddd8d0;
+    }
+    thead th {
+      padding: 0.9rem 1.1rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #666;
+    }
+    tbody tr {
+      border-bottom: 1px solid #ece9e3;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #faf9f7; }
+    tbody td {
+      padding: 0.85rem 1.1rem;
+      color: #333;
+    }
+    tbody td.temp-cell { color: #8b4513; font-weight: 600; }
+    tbody td.hum-cell  { color: #1a4d6e; font-weight: 600; }
+    tbody td.num-cell  { color: #999; font-size: 0.82rem; }
+
+    .btn-delete {
+      background: transparent;
+      border: 1px solid #c0392b;
+      color: #c0392b;
+      padding: 0.3rem 0.75rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-delete:hover { background: #c0392b; color: #fff; }
+
+    .empty-row td {
+      text-align: center;
+      color: #aaa;
+      padding: 3rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 640px) {
+      .sensor-grid { grid-template-columns: 1fr; }
+      .lcd-input-row { flex-direction: column; }
+      .navbar h1 { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="icon">📡</span>
+      <h1>SISTec IoT Application 2026</h1>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user">Logged in as <strong id="nav-username">—</strong></span>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="main">
+
+    <!-- ===== Section 1: Live Sensor Values ===== -->
+    <div class="section-header">
+      <div class="gold-accent"></div>
+      <h2>Live Sensor Values</h2>
+    </div>
+
+    <div class="sensor-grid">
+      <!-- Temperature -->
+      <div class="sensor-card">
+        <div class="card-label">
+          <span class="label-icon">🌡</span> Temperature
+        </div>
+        <div class="big-value" id="temp-val">— <span class="unit">°C</span></div>
+        <div class="card-meta">
+          <div class="meta-item"><strong id="temp-time">—</strong> Time</div>
+          <div class="meta-item"><strong id="temp-date">—</strong> Date</div>
+        </div>
+      </div>
+
+      <!-- Humidity -->
+      <div class="sensor-card">
+        <div class="card-label">
+          <span class="label-icon">💧</span> Humidity
+        </div>
+        <div class="big-value" id="hum-val">— <span class="unit">%</span></div>
+        <div class="card-meta">
+          <div class="meta-item"><strong id="hum-time">—</strong> Time</div>
+          <div class="meta-item"><strong id="hum-date">—</strong> Date</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Section 2: LCD Text Sender ===== -->
+    <div class="section-header">
+      <div class="gold-accent"></div>
+      <h2>LCD Display Text Sender</h2>
+    </div>
+
+    <div class="lcd-panel">
+      <label>Text to display on 16×2 LCD screen</label>
+      <div class="lcd-input-row">
+        <input type="text" id="lcd-input" maxlength="16" placeholder="Type here (max 16 characters)..." />
+        <button class="btn-send" onclick="sendLCD()">Send to LCD</button>
+      </div>
+      <div class="char-info" id="char-count">0 / 16 characters used</div>
+      <div class="lcd-msg" id="lcd-msg"></div>
+    </div>
+
+    <!-- ===== Section 3: Sensor Records ===== -->
+    <div class="section-header">
+      <div class="gold-accent"></div>
+      <h2>Sensor Records</h2>
+    </div>
+
+    <div class="table-panel">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Temperature</th>
+            <th>Humidity</th>
+            <th>Time</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="records-body">
+          <tr class="empty-row"><td colspan="6">Loading records...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    // Show username
+    document.getElementById('nav-username').textContent = localStorage.getItem('username') || 'User';
+
+    // Character counter
+    document.getElementById('lcd-input').addEventListener('input', function () {
+      document.getElementById('char-count').textContent = this.value.length + ' / 16 characters used';
+    });
+
+    // Fetch latest sensor reading
+    async function fetchLatest() {
+      try {
+        const res = await fetch('/api/latest');
+        const data = await res.json();
+        if (data && data.temperature !== undefined) {
+          document.getElementById('temp-val').innerHTML = data.temperature + ' <span class="unit">°C</span>';
+          document.getElementById('hum-val').innerHTML  = data.humidity + ' <span class="unit">%</span>';
+          document.getElementById('temp-time').textContent = data.time;
+          document.getElementById('temp-date').textContent = data.date;
+          document.getElementById('hum-time').textContent  = data.time;
+          document.getElementById('hum-date').textContent  = data.date;
+        }
+      } catch (e) {}
+    }
+
+    // Fetch all records
+    async function fetchRecords() {
+      try {
+        const res = await fetch('/api/records');
+        const records = await res.json();
+        const tbody = document.getElementById('records-body');
+
+        if (!records.length) {
+          tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No records found. Waiting for sensor data...</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        records.forEach((row, i) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="num-cell">${i + 1}</td>
+            <td class="temp-cell">${row.temperature} °C</td>
+            <td class="hum-cell">${row.humidity} %</td>
+            <td>${row.time}</td>
+            <td>${row.date}</td>
+            <td><button class="btn-delete" onclick="deleteRecord(${row.id})">Delete</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {}
+    }
+
+    // Delete record
+    async function deleteRecord(id) {
+      if (!confirm('Delete this sensor record?')) return;
+      try {
+        await fetch('/api/delete/' + id, { method: 'DELETE' });
+        fetchRecords();
+        fetchLatest();
+      } catch (e) { alert('Could not delete record.'); }
+    }
+
+    // Send LCD text
+    async function sendLCD() {
+      const text = document.getElementById('lcd-input').value.trim();
+      const msgDiv = document.getElementById('lcd-msg');
+      msgDiv.style.display = 'none';
+
+      if (!text) {
+        msgDiv.textContent = 'Please enter text before sending.';
+        msgDiv.className = 'lcd-msg error';
+        msgDiv.style.display = 'block';
+        return;
+      }
+      try {
+        const res = await fetch('/api/lcd', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+        const data = await res.json();
+        if (data.success) {
+          msgDiv.textContent = 'Text sent to LCD successfully.';
+          msgDiv.className = 'lcd-msg success';
+          document.getElementById('lcd-input').value = '';
+          document.getElementById('char-count').textContent = '0 / 16 characters used';
+        } else {
+          msgDiv.textContent = 'Failed to send text.';
+          msgDiv.className = 'lcd-msg error';
+        }
+        msgDiv.style.display = 'block';
+      } catch {
+        msgDiv.textContent = 'Server error.';
+        msgDiv.className = 'lcd-msg error';
+        msgDiv.style.display = 'block';
+      }
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('username');
+      window.location.href = 'index.html';
+    }
+
+    // Init
+    fetchLatest();
+    fetchRecords();
+    setInterval(() => { fetchLatest(); fetchRecords(); }, 10000);
+  </script>
+</body>
+</html>

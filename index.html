@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SISTec IoT – Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background-color: #f4f1ec;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .page-wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 880px;
+      background: #ffffff;
+      border: 1px solid #ddd8d0;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+      overflow: hidden;
+    }
+
+    /* Left Panel */
+    .left-panel {
+      background-color: #1a2744;
+      color: #fff;
+      width: 42%;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .brand-icon { font-size: 2rem; margin-bottom: 1.5rem; }
+    .left-panel h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      line-height: 1.35;
+      margin-bottom: 1rem;
+    }
+    .gold-line { width: 36px; height: 2px; background: #c9a84c; margin: 1.4rem 0; }
+    .left-panel p { font-size: 0.88rem; color: #a8b4cc; line-height: 1.75; }
+    .feature-list { margin-top: 1.8rem; }
+    .feature-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 0.65rem; font-size: 0.84rem; color: #c5cfe0;
+    }
+    .dot { width: 5px; height: 5px; background: #c9a84c; border-radius: 50%; flex-shrink: 0; }
+
+    /* Right Panel */
+    .right-panel {
+      flex: 1;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .right-panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      color: #1a2744;
+      margin-bottom: 0.3rem;
+    }
+    .subtitle { font-size: 0.87rem; color: #888; font-weight: 300; margin-bottom: 2rem; }
+
+    .form-group { margin-bottom: 1.15rem; }
+    label {
+      display: block;
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 0.4rem;
+    }
+    input[type="email"], input[type="password"], input[type="text"] {
+      width: 100%;
+      border: 1px solid #d0ccc6;
+      background: #faf9f7;
+      padding: 0.72rem 1rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      color: #1a1a1a;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+    input:focus { border-color: #1a2744; background: #fff; }
+
+    .btn-primary {
+      width: 100%;
+      background: #1a2744;
+      color: #fff;
+      border: none;
+      padding: 0.82rem 1rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.4rem;
+    }
+    .btn-primary:hover { background: #253a6e; }
+
+    .error-box {
+      background: #fef4f4;
+      border-left: 3px solid #b94040;
+      color: #b94040;
+      font-size: 0.84rem;
+      padding: 0.6rem 0.9rem;
+      margin-bottom: 1.1rem;
+      display: none;
+    }
+    .footer-link { text-align: center; margin-top: 1.6rem; font-size: 0.85rem; color: #888; }
+    .footer-link a { color: #1a2744; font-weight: 600; text-decoration: none; }
+    .footer-link a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .left-panel { display: none; }
+      .right-panel { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrapper">
+    <div class="left-panel">
+      <div class="brand-icon">📡</div>
+      <h1>SISTec IoT Application 2026</h1>
+      <div class="gold-line"></div>
+      <p>Monitor your IoT devices in real time from a single professional dashboard.</p>
+      <div class="feature-list">
+        <div class="feature-item"><span class="dot"></span> Live Temperature & Humidity</div>
+        <div class="feature-item"><span class="dot"></span> Remote LCD Text Control</div>
+        <div class="feature-item"><span class="dot"></span> Complete Sensor History</div>
+        <div class="feature-item"><span class="dot"></span> ESP8266 API Integration</div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <h2>Sign In</h2>
+      <p class="subtitle">Enter your credentials to access the dashboard</p>
+
+      <div class="error-box" id="error-msg"></div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Your password" />
+      </div>
+
+      <button class="btn-primary" onclick="doLogin()">Sign In to Dashboard</button>
+
+      <div class="footer-link">
+        No account yet? <a href="register.html">Register here</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function doLogin() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorDiv = document.getElementById('error-msg');
+      errorDiv.style.display = 'none';
+
+      if (!email || !password) {
+        errorDiv.textContent = 'Please enter your email and password.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('username', data.name);
+          window.location.href = 'dashboard.html';
+        } else {
+          errorDiv.textContent = data.message || 'Invalid credentials.';
+          errorDiv.style.display = 'block';
+        }
+      } catch {
+        errorDiv.textContent = 'Server error. Please try again.';
+        errorDiv.style.display = 'block';
+      }
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  </script>
+</body>
+</html>
